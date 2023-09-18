@@ -4,5 +4,5 @@
  */
 void display_prompt(void)
 {
-	_print(":) ");
+	eugo_print(":) ");
 }

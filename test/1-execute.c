@@ -2,9 +2,11 @@
 /**
  *
  */
-void execute(const char *commands)
+void execute()
 {
 	pid_t child_pid = fork(); /* creates a child process.. */
+
+	int i;
 
 	if (child_pid == -1)
 	{
@@ -32,8 +34,8 @@ void execute(const char *commands)
 		/* Free allocated memory */
         
 		free(command);
-        
-		for (int i = 1; i <= 3; i++) {
+
+		for (i = 1; i <= 3; i++) {
             
 			free(argv[i]);
         

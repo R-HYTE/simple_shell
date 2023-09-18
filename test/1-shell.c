@@ -14,7 +14,7 @@ int main(void)
 
 		get_command(commands, sizeof(commands));
 
-		execute(commands);
+		execute();
 
 
 	}

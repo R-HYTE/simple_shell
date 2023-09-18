@@ -2,7 +2,7 @@
 /**
  *
  */
-void _print(const char *answer)
+void eugo_print(const char *answer)
 {
 	write(STDOUT_FILENO, answer, strlen(answer));
 }

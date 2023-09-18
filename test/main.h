@@ -19,8 +19,8 @@ void gets_command(char *commands, size_t size);
 
 /* 1-shell.c prototypes */
 void display_prompt(void);
-void _print(const char *answer);
-void execute(const char *commands);
+void eugo_print(const char *answer);
+void execute();
 void get_command(char *commands, size_t size);
-
+void eugo_print(const char *answer);
 #endif /* MAIN_H */
