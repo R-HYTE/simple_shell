@@ -1,31 +1,45 @@
 #include "main.h"
 
-/**
- * execute - Execute the specified command
- * @command: The command to execute
- */
-void execute(char *command)
+void execute(char **argv)
 {
-	pid_t pid = fork();
+	char *command = NULL;
+	char *actual_command = NULL;
+	pid_t pid;
+	int status;
 
-	if (pid == -1)
+	if (argv)
 	{
-		perror("Fork failed");
-		exit(EXIT_FAILURE);
-	}
+		pid = fork();
 
-	if (pid == 0) {
-		/* Child process */
-		if (execlp(command, command, NULL) == -1)
+		if (pid == 0)
 		{
-			fprintf(stderr, "./hsh: No such file or directory\n");
+			command = argv[0];
+			actual_command = find_executable_path(command);
+
+			if (actual_command == NULL)
+			{
+				fprintf(stderr, "Command '%s' not found.\n", command);
+				exit(EXIT_FAILURE);
+			}
+
+			if (execve(actual_command, argv, NULL) == -1)
+			{
+				perror("Execution error");
+				exit(EXIT_FAILURE);
+			}
+
+			free(actual_command);
+		}
+		else if (pid < 0)
+		{
+			perror("Fork error");
 			exit(EXIT_FAILURE);
 		}
-	}
-	else
-	{
-		/* Parent process */
-		int status;
-		waitpid(pid, &status, 0);
+		else
+		{
+			/*Parent process*/
+			/*Wait for the child process to complete*/
+			waitpid(pid, &status, 0);
+		}
 	}
 }
