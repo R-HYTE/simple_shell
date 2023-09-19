@@ -29,9 +29,10 @@ int main(int argc, char **argv)
 		line[num_of_chars_read - 1] = '\0';
 		if (strcmp(line, "exit") == 0)
 		{
-			printf("Exiting shell.....\n");
 			break;
 		}
+		else if (strcmp(line, "env") == 0)
+			print_environment();
 
 		/*Store a copy of what was read from the stdin*/
 		line_copy = malloc(sizeof(char) * num_of_chars_read);

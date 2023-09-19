@@ -12,5 +12,6 @@
 
 void execute(char **argv);
 char *find_executable_path(char *command);
+void print_environment();
 
 #endif
