@@ -7,6 +7,7 @@
  */
 int main(void)
 {
+	char *prompt;
 	char *line = NULL, *line_copy = NULL, *tokenized_args[MAX_ARG_COUNT];
 	size_t size = 0;
 	ssize_t num_of_chars_read;
@@ -16,8 +17,7 @@ int main(void)
 	int is_terminal_fd = fileno(stdin);
 	int is_terminal_result = is_terminal(is_terminal_fd);
 
-	char *prompt = (is_terminal_result) ? "$ " : ""; /* Set the prompt accordingly */
-
+	prompt = (is_terminal_result) ? "$ " : ""; /*Set the prompt accordingly*/
 	while (true)
 	{
 		printf("%s", prompt);
@@ -29,7 +29,6 @@ int main(void)
 			break;
 		}
 		line[num_of_chars_read - 1] = '\0';
-
 		if (strcmp(line, "exit") == 0)
 			break;
 		line_copy = strdup(line);
@@ -39,7 +38,6 @@ int main(void)
 			break;
 		}
 		tokenize_input(line_copy, tokenized_args, &token_count);
-
 		if (token_count > 0)
 		{
 			execute(tokenized_args);
