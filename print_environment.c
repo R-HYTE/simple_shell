@@ -1,7 +1,11 @@
 #include "main.h"
 
-extern char **environ;
-void print_environment()
+/**
+ * print_environment - Prints te environment variables
+ * Return: void
+ */
+
+void print_environment(void)
 {
 	char **env_ptr = environ;
 
