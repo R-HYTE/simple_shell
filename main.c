@@ -7,11 +7,16 @@
  */
 int main(void)
 {
-	char *prompt = "";
 	char *line = NULL, *line_copy = NULL, *tokenized_args[MAX_ARG_COUNT];
 	size_t size = 0;
 	ssize_t num_of_chars_read;
 	int token_count = 0;
+
+	/* Determine if input is from a terminal */
+	int is_terminal_fd = fileno(stdin);
+	int is_terminal_result = is_terminal(is_terminal_fd);
+
+	char *prompt = (is_terminal_result) ? "$ " : ""; /* Set the prompt accordingly */
 
 	while (true)
 	{
