@@ -1,5 +1,11 @@
 #include "main.h"
 
+/**
+ * execute - Execute a command
+ * @argv: Array of strings representing the command and its arguments
+ * Return: void
+ */
+
 void execute(char **argv)
 {
 	char *command = NULL;
