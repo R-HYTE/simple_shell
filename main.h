@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
+void tokenize_input(char *line, char *argv[], int *argc);
 void execute(char **argv);
 char *find_executable_path(char *command);
 void print_environment(void);

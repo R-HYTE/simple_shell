@@ -1,104 +1,47 @@
 #include "main.h"
+#define MAX_ARG_COUNT 100 /* Define a suitable value for MAX_ARG_COUNT */
 
 /**
  * main - Entry point
- * @argc: word count of input on CLI
- * @argv: argument vector
  * Return: 0 (Success)
  */
-int main(int argc, char **argv)
+int main(void)
 {
 	char *prompt = "$ ";
-	char *line = NULL, *line_copy = NULL, *token;
+	char *line = NULL, *line_copy = NULL, *tokenized_args[MAX_ARG_COUNT];
 	size_t size = 0;
 	ssize_t num_of_chars_read;
-	const char *delimiter = " \n";
-	int token_count, i, j;
+	int token_count = 0;
 
-	(void)argc;
 	while (true)
 	{
-		printf("%s", prompt); /*Prompt message*/ 
-		num_of_chars_read = getline(&line, &size, stdin); /*getline() returns num of characters read*/
-		/*get to see if we've reached EOF or Ctrl + D to exit shell*/
+		printf("%s", prompt);
+		num_of_chars_read = getline(&line, &size, stdin);
+
 		if (num_of_chars_read == -1)
 		{
 			fprintf(stderr, "Error reading input. Exiting shell\n");
 			break;
 		}
 		line[num_of_chars_read - 1] = '\0';
+
 		if (strcmp(line, "exit") == 0)
-		{
 			break;
-		}
-		else if (strcmp(line, "env") == 0)
-			print_environment();
-
-		/*Store a copy of what was read from the stdin*/
-		line_copy = malloc(sizeof(char) * num_of_chars_read);
-		if (line_copy == NULL)
+		line_copy = strdup(line);
+		if (!line_copy)
 		{
 			perror("memory allocation error");
-			free(line);
 			break;
 		}
-		strcpy(line_copy, line);
-		/*tokenization of the line from the stdin to get number of tokens*/
-		/*the string in line gets destroyed in the process*/
-		token_count = 0;
-		token = strtok(line, delimiter);
-		while (token != NULL)
+		tokenize_input(line_copy, tokenized_args, &token_count);
+
+		if (token_count > 0)
 		{
-			token_count++;
-			token = strtok(NULL, delimiter);
+			execute(tokenized_args);
 		}
-		token_count++; /*We are considering the new line when you press enter*/
-
-		/*Storing actual token in an array*/
-		argv = malloc(sizeof(char *) * token_count);
-		if (argv == NULL)
-		{
-			perror("memory allocation error");
-			free(line_copy);
-			free(line);
-			break;
-		}
-
-		token = strtok(line_copy, delimiter);
-
-		for (i = 0; token != NULL; i++)
-		{
-			argv[i] = malloc(sizeof(char) * strlen(token) + 1);
-			if (argv[i] == NULL)
-			{
-				perror("memory allocation error");
-				for (j = 0; j < i; j++)
-				{
-					free(argv[j]);
-				}
-				free(argv);
-				free(line_copy);
-				free(line);
-				return (-1);
-			}
-			strcpy(argv[i], token);
-			token = strtok(NULL, delimiter);
-		}
-		argv[i] = NULL;
-
-		/*Executing these commands*/
-		execute(argv);
-
-		for (j = 0; j < i; j++)
-		{
-			free(argv[j]);
-		}
-		free(argv);
-
 		free(line_copy);
-
 	}
-	free(line);/*free the dynamic memory being occupied thanks to the getline() operations*/
-
+	free(line);
 	return (0);
 }
+
