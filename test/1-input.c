@@ -18,5 +18,5 @@ void get_command(char *commands, size_t size)
 		}
 
 	}
-	commands[strcspn(commands, "/n")]= '\0';
+	commands[strcspn(commands, " /n")]= '\0';
 }

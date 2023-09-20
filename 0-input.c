@@ -1,8 +1,9 @@
-#include "main.h"
+#include "0-main.h"
 /**
  * gets_command - reads a command from stdin into the provided buffer.
  *
  * @commands: Pointer to the buffer where the command will be stored.
+ *
  * @size: Size of the buffer.
  */
 void gets_command(char *commands, size_t size)
