@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-	char *prompt = "$ ";
+	char *prompt = "";
 	char *line = NULL, *line_copy = NULL, *tokenized_args[MAX_ARG_COUNT];
 	size_t size = 0;
 	ssize_t num_of_chars_read;
@@ -44,4 +44,3 @@ int main(void)
 	free(line);
 	return (0);
 }
-
