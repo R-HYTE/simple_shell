@@ -27,7 +27,6 @@ void execute(char **argv)
 				fprintf(stderr, "Command '%s' not found.\n", command);
 				exit(EXIT_FAILURE);
 			}
-
 			if (execve(actual_command, argv, NULL) == -1)
 			{
 				perror("Execution error");

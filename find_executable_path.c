@@ -47,5 +47,5 @@ char *find_executable_path(char *command)
 
 		return (full_command_path);
 	}
-		return (NULL);
+	return (NULL);
 }
