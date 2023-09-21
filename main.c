@@ -1,4 +1,4 @@
-#include "0-main.h"
+#include "main.h"
 /**
  * main - function that executes the shell program.
  *
@@ -9,7 +9,8 @@
  */
 int main(void)
 {
-	char commands[1024];
+	char **commands = NULL;
+	size_t size = 0;
 
 	/* Infinite loop for the shell */
 	while (true)
@@ -18,10 +19,13 @@ int main(void)
 		display_prompt();
 
 		/* Gets user input */
-		gets_command(commands, sizeof(commands));
+		gets_command(commands, &size);
 
 		/* Execute the entered command */
-		execute_command(commands);
+		execute_commands(commands[0]);
+
+		token_input(commands, NULL, NULL);
 	}
+	free(commands);
 	return (0);
 }
