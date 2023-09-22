@@ -1,2 +1,7 @@
 # Ignore compiled files
 hsh
+
+#Locally testing my code
+TEST_SUITES
+allowed_functions
+runchecker.bash
