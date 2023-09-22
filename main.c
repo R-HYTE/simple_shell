@@ -1,49 +1,70 @@
 #include "main.h"
-#define MAX_ARG_COUNT 100 /* Define a suitable value for MAX_ARG_COUNT */
+
+/**
+ * free_data - frees data structure
+ * @datash: data structure to be freed
+ * Return: void
+ */
+void free_data(data_shell *datash)
+{
+	unsigned int i;
+
+	for (i = 0; datash->_environ[i]; i++)
+	{
+		free(datash->_environ[i]);
+	}
+
+	free(datash->_environ);
+	free(datash->pid);
+}
+
+/**
+ * set_data - Initialize data structure
+ * with the provided argument vector
+ * @datash: data structure
+ * @argv: argument vector
+ * Return: void
+ */
+void set_data(data_shell *datash, char **argv)
+{
+	unsigned int i;
+
+	datash->argv = argv;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
+
+	for (i = 0; environ[i]; i++)
+		;
+
+	datash->_environ = malloc(sizeof(char *) * (i + 1));
+
+	for (i = 0; environ[i]; i++)
+	{
+		datash->_environ[i] = _strdup(environ[i]);
+	}
+
+	datash->_environ[i] = NULL;
+	datash->pid = _itoa(getpid());
+}
 
 /**
  * main - Entry point
+ * @argc: argument count
+ * @argv: argument vector
  * Return: 0 (Success)
  */
-int main(void)
+int main(int argc, char **argv)
 {
-	char *prompt;
-	char *line = NULL, *line_copy = NULL, *tokenized_args[MAX_ARG_COUNT];
-	size_t size = 0;
-	ssize_t num_of_chars_read;
-	int token_count = 0;
+	data_shell datash;
+	(void) argc;
 
-	/* Determine if input is from a terminal */
-	int is_terminal_fd = fileno(stdin);
-	int is_terminal_result = is_terminal(is_terminal_fd);
-
-	prompt = (is_terminal_result) ? "$ " : ""; /*Set the prompt accordingly*/
-	while (true)
-	{
-		printf("%s", prompt);
-		num_of_chars_read = getline(&line, &size, stdin);
-
-		if (num_of_chars_read == -1)
-		{
-			fprintf(stderr, "Error reading input. Exiting shell\n");
-			break;
-		}
-		line[num_of_chars_read - 1] = '\0';
-		if (strcmp(line, "exit") == 0)
-			break;
-		line_copy = strdup(line);
-		if (!line_copy)
-		{
-			perror("memory allocation error");
-			break;
-		}
-		tokenize_input(line_copy, tokenized_args, &token_count);
-		if (token_count > 0)
-		{
-			execute(tokenized_args);
-		}
-		free(line_copy);
-	}
-	free(line);
-	return (0);
+	signal(SIGINT, get_sigint);
+	set_data(&datash, argv);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
+		return (255);
+	return (datash.status);
 }
