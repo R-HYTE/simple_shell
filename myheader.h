@@ -18,5 +18,6 @@ void execute_command(char **args);
 void display_environment(void);
 int is_terminal_fd(int fd);
 void tokenize_input_line(char *input_line, char *args[], int *arg_count);
+char **str_split(char *str, const char delim);
 
 #endif /* END OF MYHEADER FILE */
